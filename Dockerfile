@@ -39,7 +39,7 @@ ENV LANG en_US.UTF-8
 RUN echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list \
     && echo 'APT::Default-Release "testing";' > /etc/apt/apt.conf.d/default
 
-ENV R_BASE_VERSION 3.4.1
+ENV R_BASE_VERSION 3.5.1  # changed from 3.4.1 PC
 
 ## Now install R and littler, and create a link for littler in /usr/local/bin
 ## Also set a default CRAN repo, and make sure littler knows about it too
@@ -47,9 +47,13 @@ RUN apt-get update \
     && apt-get install -t unstable -y --no-install-recommends \
         littler \
         r-cran-littler \
-        r-base=${R_BASE_VERSION}* \
-        r-base-dev=${R_BASE_VERSION}* \
-        r-recommended=${R_BASE_VERSION}* \
+#         r-base=${R_BASE_VERSION}* \  # changed PC
+        r-base \
+#         r-base-dev=${R_BASE_VERSION}* \  # changed PC
+#         r-base-dev=_VERSION}* \  # changed PC
+        r-base-dev \
+#         r-recommended=${R_BASE_VERSION}* \  # changed PC
+        r-recommended \
         && echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
         && echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r \
     && ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r \
